@@ -202,6 +202,7 @@ open class PMSuperButton: UIButton {
         self.isUserInteractionEnabled = userInteraction
         indicator.isUserInteractionEnabled = false
         indicator.center = CGPoint(x: self.bounds.size.width/2, y: self.bounds.size.height/2)
+        self.addSubview(indicator)
         indicator.alpha = 0
         indicator.startAnimating()
         UIView.transition(with: self, duration: 0.5, options: .curveEaseOut, animations: {

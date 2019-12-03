@@ -191,7 +191,6 @@ open class PMSuperButton: UIButton {
     //MARK: - Loading
     let indicator: UIActivityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
     public var isLoading: Bool = false
-    
     /**
      Show a loader inside the button, and enable or disable user interection while loading
      */
@@ -206,10 +205,9 @@ open class PMSuperButton: UIButton {
         UIView.transition(with: self, duration: 0.5, options: .curveEaseOut, animations: {
             self.titleLabel?.alpha = 0.0
             self.imageAlpha = 0.0
-        }) { (finished) in
             self.addSubview(self.indicator)
             self.indicator.startAnimating()
-        }
+        })
     }
     
     open func hideLoader(){

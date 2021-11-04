@@ -202,7 +202,7 @@ open class PMSuperButton: UIButton {
     /**
      Show a loader inside the button, and enable or disable user interection while loading
      */
-    open func showLoader(userInteraction: Bool = true) {
+    open func showLoader(userInteraction: Bool = true, hideTitle: Bool = true, tintColor: UIColor? = nil) {
         guard !subviews.contains(indicator) else { return }
         
         isLoading = true
@@ -212,17 +212,30 @@ open class PMSuperButton: UIButton {
         indicator.isUserInteractionEnabled = false
         
         addSubview(indicator)
-        NSLayoutConstraint.activate([
-            NSLayoutConstraint(item: indicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
-        ])
+        if hideTitle {
+            NSLayoutConstraint.activate([
+                NSLayoutConstraint(item: indicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
+            ])
+        } else {
+            contentEdgeInsets = UIEdgeInsets(top: contentEdgeInsets.top, left: contentEdgeInsets.left, bottom: contentEdgeInsets.bottom, right: contentEdgeInsets.right + 10)
+            NSLayoutConstraint.activate([
+                NSLayoutConstraint(item: indicator, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -10),
+                NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
+            ])
+        }
+
         layoutIfNeeded()
         
+        if let tintColor = tintColor {
+            indicator.color = tintColor
+        }
+
         indicator.alpha = 0
         indicator.startAnimating()
         
         UIView.transition(with: self, duration: 0.25, options: .curveEaseOut) {
-            self.titleLabel?.alpha = 0.0
+            self.titleLabel?.alpha = hideTitle ? 0.0 : 1.0
             self.imageAlpha = 0.0
             self.indicator.alpha = 1.0
         }
@@ -236,6 +249,10 @@ open class PMSuperButton: UIButton {
         
         indicator.stopAnimating()
         indicator.removeFromSuperview()
+        
+        if titleLabel?.alpha == 1.0 {
+            contentEdgeInsets = UIEdgeInsets(top: contentEdgeInsets.top, left: contentEdgeInsets.left, bottom: contentEdgeInsets.bottom, right: contentEdgeInsets.right - 10)
+        }
         
         UIView.transition(with: self, duration: 0.25, options: .curveEaseIn) {
             self.titleLabel?.alpha = 1.0

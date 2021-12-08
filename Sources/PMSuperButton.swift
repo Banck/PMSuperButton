@@ -199,6 +199,7 @@ open class PMSuperButton: UIButton {
     let indicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     
     public var isLoading: Bool = false
+    public var isHiddenTitle: Bool = false
     /**
      Show a loader inside the button, and enable or disable user interection while loading
      */
@@ -206,13 +207,14 @@ open class PMSuperButton: UIButton {
         guard !subviews.contains(indicator) else { return }
         
         isLoading = true
+        isHiddenTitle = hideTitle
         isUserInteractionEnabled = userInteraction
         
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.isUserInteractionEnabled = false
         
         addSubview(indicator)
-        if hideTitle {
+        if isHiddenTitle {
             NSLayoutConstraint.activate([
                 NSLayoutConstraint(item: indicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
                 NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
@@ -234,11 +236,8 @@ open class PMSuperButton: UIButton {
         indicator.alpha = 0
         indicator.startAnimating()
         
-        titleLabel?.alpha = 1.0
-        imageAlpha = 0.0
-        
         UIView.transition(with: self, duration: 0.25, options: .curveEaseOut) {
-            self.titleLabel?.alpha = hideTitle ? 0.0 : 1.0
+            self.titleLabel?.alpha = self.isHiddenTitle ? 0.0 : 1.0
             self.imageAlpha = 0.0
             self.indicator.alpha = 1.0
         }
@@ -253,7 +252,7 @@ open class PMSuperButton: UIButton {
         indicator.stopAnimating()
         indicator.removeFromSuperview()
         
-        if titleLabel?.alpha == 1.0 {
+        if !isHiddenTitle {
             contentEdgeInsets = UIEdgeInsets(top: contentEdgeInsets.top, left: contentEdgeInsets.left, bottom: contentEdgeInsets.bottom, right: contentEdgeInsets.right - 10)
         }
         

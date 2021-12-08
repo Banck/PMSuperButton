@@ -212,15 +212,15 @@ open class PMSuperButton: UIButton {
         indicator.isUserInteractionEnabled = false
         
         addSubview(indicator)
-        if hideTitle {
-            NSLayoutConstraint.activate([
-                NSLayoutConstraint(item: indicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
-            ])
-        } else {
+        if titleLabel?.text?.isEmpty == false, !hideTitle {
             contentEdgeInsets = UIEdgeInsets(top: contentEdgeInsets.top, left: contentEdgeInsets.left, bottom: contentEdgeInsets.bottom, right: contentEdgeInsets.right + 10)
             NSLayoutConstraint.activate([
                 NSLayoutConstraint(item: indicator, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -10),
+                NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                NSLayoutConstraint(item: indicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
                 NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
             ])
         }
@@ -250,7 +250,7 @@ open class PMSuperButton: UIButton {
         indicator.stopAnimating()
         indicator.removeFromSuperview()
         
-        if titleLabel?.alpha == 1.0 {
+        if titleLabel?.text?.isEmpty == false, titleLabel?.alpha == 1.0 {
             contentEdgeInsets = UIEdgeInsets(top: contentEdgeInsets.top, left: contentEdgeInsets.left, bottom: contentEdgeInsets.bottom, right: contentEdgeInsets.right - 10)
         }
         

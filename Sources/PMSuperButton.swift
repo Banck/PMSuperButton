@@ -212,15 +212,15 @@ open class PMSuperButton: UIButton {
         indicator.isUserInteractionEnabled = false
         
         addSubview(indicator)
-        if titleLabel?.text?.isEmpty == false, !hideTitle {
-            contentEdgeInsets = UIEdgeInsets(top: contentEdgeInsets.top, left: contentEdgeInsets.left, bottom: contentEdgeInsets.bottom, right: contentEdgeInsets.right + 10)
+        if hideTitle {
             NSLayoutConstraint.activate([
-                NSLayoutConstraint(item: indicator, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -10),
+                NSLayoutConstraint(item: indicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
                 NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
             ])
         } else {
+            contentEdgeInsets = UIEdgeInsets(top: contentEdgeInsets.top, left: contentEdgeInsets.left, bottom: contentEdgeInsets.bottom, right: contentEdgeInsets.right + 10)
             NSLayoutConstraint.activate([
-                NSLayoutConstraint(item: indicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: indicator, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -10),
                 NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
             ])
         }
@@ -233,6 +233,9 @@ open class PMSuperButton: UIButton {
 
         indicator.alpha = 0
         indicator.startAnimating()
+        
+        titleLabel?.alpha = 1.0
+        imageAlpha = 0.0
         
         UIView.transition(with: self, duration: 0.25, options: .curveEaseOut) {
             self.titleLabel?.alpha = hideTitle ? 0.0 : 1.0
@@ -250,7 +253,7 @@ open class PMSuperButton: UIButton {
         indicator.stopAnimating()
         indicator.removeFromSuperview()
         
-        if titleLabel?.text?.isEmpty == false, titleLabel?.alpha == 1.0 {
+        if titleLabel?.alpha == 1.0 {
             contentEdgeInsets = UIEdgeInsets(top: contentEdgeInsets.top, left: contentEdgeInsets.left, bottom: contentEdgeInsets.bottom, right: contentEdgeInsets.right - 10)
         }
         

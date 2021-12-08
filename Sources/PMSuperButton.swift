@@ -234,6 +234,9 @@ open class PMSuperButton: UIButton {
         indicator.alpha = 0
         indicator.startAnimating()
         
+        titleLabel?.alpha = 1.0
+        imageAlpha = 0.0
+        
         UIView.transition(with: self, duration: 0.25, options: .curveEaseOut) {
             self.titleLabel?.alpha = hideTitle ? 0.0 : 1.0
             self.imageAlpha = 0.0
